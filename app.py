@@ -43,13 +43,30 @@ def callback():
 def handle_message(event):
     message = TextSendMessage(text=event.message.text)
     #line_bot_api.reply_message(event.reply_token,message)
-    # if "股票 " in message:
-    #     stock_mes = stock_message(message[3:])
-    #     line_bot_api.reply_message()
-    if "個股資訊 " in message:
-        stock_n = stock_id(message[5:])
-        cont = continue_after(message[5:])
-        line_bot_api.reply_message(event.reply_token,[TextSendMessage(stock_n),cont])
+    if "股票 " in message:
+        buttons_template_message = TemplateSendMessage(
+        alt_text = "股票資訊",
+        template=CarouselTemplate( 
+            columns=[ 
+                    CarouselColumn( 
+                        thumbnail_image_url ="https://www.moneyweekly.com.tw/Photo/%E8%AA%AA%E8%A7%A3%E8%B2%A1%E7%B6%93%E5%A4%A7%E5%B0%8F%E4%BA%8B/202109281943_510054.jpg",
+                        title = message + " 股票資訊", 
+                        text ="請點選想查詢的股票資訊", 
+                        actions =[
+                            MessageAction( 
+                                label= message[3:] + " 個股資訊",
+                                text= "個股資訊 " + message[3:]),
+                            MessageAction( 
+                                label= message[3:] + " 個股新聞",
+                                text= "個股新聞 " + message[3:])
+                        ]
+                    )
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+    else:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(message))
 
 #個股資訊
 def stock_id(message):
@@ -71,6 +88,7 @@ def stock_id(message):
         return mes
     except:
         return("請輸入正確的股票代號")
+
 
 #主程式
 import os
