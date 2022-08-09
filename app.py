@@ -45,7 +45,7 @@ def handle_message(event):
     message = TextSendMessage(text=event.message.text)
     #line_bot_api.reply_message(event.reply_token,message)
     try:
-        if "股票 " in message:
+        if re.match("股票 ",message):
             buttons_template_message = TemplateSendMessage(
             alt_text = "股票資訊",
             template=CarouselTemplate( 
