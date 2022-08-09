@@ -9,6 +9,7 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 
+import re
 import requests
 from bs4 import BeautifulSoup
 
@@ -66,6 +67,8 @@ def handle_message(event):
                 )
             )
             line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        elif re.match("你誰",message):
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("誰啊"))
         else:
             line_bot_api.reply_message(event.reply_token, TextSendMessage(message))
     except Exception as e:
