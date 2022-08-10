@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 line_bot_api = LineBotApi('sjEayc82L0K5ev7FYdxxs7AV4jNAx1nqKQmrVlc+PeJOHaRB+meKQg0wpVFIlbbIF791AbvJDZ6LFiVsCQmddIH4OLMVRRyP4iugpwocMSREw/9T9hM5KQ16QsddyQUo93zVlIGBmk5Wkcnq745HKAdB04t89/1O/w1cDnyilFU=')
 handler = WebhookHandler('e213dad35df328c5db99a16199c7ecef')
-line_bot_api.push_message('Uc1256d73be33afcc36970d5f722b6114', TextSendMessage(text='你可以開始了'))
+line_bot_api.push_message('Uc1256d73be33afcc36970d5f722b6114', TextSendMessage(text='Program Update Success!!'))
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -81,6 +81,10 @@ def handle_message(event):
             QuickReplyButton(action=MessageAction(label="三大法人", text="三大法人買賣超 " + message[5:]))
             ]))
             line_bot_api.reply_message(event.reply_token, flex_message)
+        elif re.match("個股資訊 ",message):
+            stock_n = stock_id(message[5:])
+            cont = continue_after(message[5:])
+            line_bot_api.reply_message(event.reply_token,[TextSendMessage(stock_n),cont])
         else:
             line_bot_api.reply_message(event.reply_token, TextSendMessage(message))
     except Exception as e:
