@@ -12,6 +12,9 @@ from linebot.models import *
 import re
 import requests
 from bs4 import BeautifulSoup
+import jieba
+import pandas as pd
+
 
 app = Flask(__name__)
 
@@ -83,8 +86,8 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token, flex_message)
         elif re.match("個股資訊 ",message):
             stock_n = stock_id(message[5:])
-            cont = continue_after(message[5:])
-            line_bot_api.reply_message(event.reply_token,[TextSendMessage(stock_n),cont])
+            #cont = continue_after(message[5:])
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(stock_n))
         else:
             line_bot_api.reply_message(event.reply_token, TextSendMessage(message))
     except Exception as e:
